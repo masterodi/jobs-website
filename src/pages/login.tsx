@@ -26,8 +26,8 @@ const Login = () => {
         <form class="mx-auto w-full max-w-3xl [&>*+*]:mt-8" onSubmit={signIn}>
           <InputLabeled name="email" id="email" label="Email" onInput={onInput} />
           <InputLabeled name="password" id="password" label="Password" type="password" onInput={onInput} />
-          <Button fluid type="submit" disabled={isLoading()}>
-            Click
+          <Button fluid type="submit" loading={isLoading()}>
+            Sign In
           </Button>
           <Button fluid type="button" onClick={() => setIsRegisterOpen((prev) => !prev)}>
             No account? Register here
@@ -39,8 +39,8 @@ const Login = () => {
         <Dialog open={isRegisterOpen} setOpen={setIsRegisterOpen}>
           <h1 class="text-2xl font-bold">Create account</h1>
           <form class="mx-auto mt-8 max-w-3xl lg:min-w-80 [&>*+*]:mt-8">
-            <InputLabeled name="email" id="email" label="Email" />
-            <InputLabeled name="password" id="password" label="Password" />
+            <InputLabeled name="email" id="email" label="Email" onInput={onInput} />
+            <InputLabeled name="password" id="password" label="Password" type="password" onInput={onInput} />
             <Button fluid type="button">
               Register
             </Button>
