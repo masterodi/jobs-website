@@ -6,7 +6,9 @@ const InputLabeled = (props: any) => {
 
   return (
     <div class="grid">
-      <label for={others.id}>{local.label}</label>
+      <label class="font-semibold" for={others.id}>
+        {local.label}
+      </label>
       <Input {...others} />
     </div>
   );
