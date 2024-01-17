@@ -3,7 +3,7 @@ import { signInUser } from './api/authentication';
 import Button from './components/Button';
 import Dialog from './components/Dialog';
 import InputLabeled from './components/InputLabeled';
-import createFields from './ss/createFields';
+import createFields from './signals/createFields';
 
 function App() {
   const [fields, _, onInput] = createFields({ email: '', password: '' });
