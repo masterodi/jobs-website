@@ -1,36 +1,27 @@
 import { Show, createSignal } from 'solid-js';
+import { InferType } from 'yup';
 import { useSessionContext } from '../Provider';
-import { BaseError } from '../api/Error';
 import { signInUser, signUpUser } from '../api/authentication';
 import Button from '../components/Button';
 import Dialog from '../components/Dialog';
 import InputLabeled from '../components/InputLabeled';
 import { registerSchema, signinSchema } from '../schemas/form';
 import createFields from '../signals/createFields';
+import { useAction } from '../useAction';
 
 const RegisterDialog = (props: any) => {
   const { refetch } = useSessionContext();
   const { fields, fieldErrors, onInput, validate } = createFields({ email: '', password: '' });
-  const [isLoading, setIsLoading] = createSignal(false);
-  const [error, setError] = createSignal<string | null>(null);
+  const { execute, isLoading, error } = useAction({
+    action: (data: InferType<typeof registerSchema>) => signUpUser(data),
+  });
 
   const register = async (e: SubmitEvent) => {
     e.preventDefault();
-
-    if (!(await validate(signinSchema))) return;
-
-    try {
-      setError(null);
-      setIsLoading(true);
-      await signUpUser(fields);
+    if (!(await validate(registerSchema))) return;
+    await execute(fields);
+    if (!error()) {
       await refetch();
-    } catch (err) {
-      if (err instanceof BaseError) {
-        setError(err.message);
-      }
-      throw err;
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -56,7 +47,7 @@ const RegisterDialog = (props: any) => {
           error={fieldErrors.password}
         />
         <Show when={error()}>
-          <div class="font-semibold text-red-500">{error()}</div>
+          <div class="font-semibold text-red-500">{error()?.message}</div>
         </Show>
         <Button fluid type="submit" loading={isLoading()}>
           Register
@@ -70,25 +61,16 @@ const Signin = () => {
   const { refetch } = useSessionContext();
   const [isRegisterOpen, setIsRegisterOpen] = createSignal(false);
   const { fields, fieldErrors, onInput, validate } = createFields({ email: '', password: '' });
-  const [isLoading, setIsLoading] = createSignal(false);
-  const [error, setError] = createSignal<string | null>(null);
+  const { execute, isLoading, error } = useAction({
+    action: (data: InferType<typeof signinSchema>) => signInUser(data),
+  });
 
   const signIn = async (e: SubmitEvent) => {
     e.preventDefault();
-    if (!(await validate(registerSchema))) return;
-
-    try {
-      setError(null);
-      setIsLoading(true);
-      await signInUser(fields);
+    if (!(await validate(signinSchema))) return;
+    await execute(fields);
+    if (!error()) {
       await refetch();
-    } catch (err) {
-      if (err instanceof BaseError) {
-        setError(err.message);
-      }
-      throw err;
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -115,7 +97,7 @@ const Signin = () => {
               error={fieldErrors.password}
             />
             <Show when={error()}>
-              <div class="font-semibold text-red-500">{error()}</div>
+              <div class="font-semibold text-red-500">{error()?.message}</div>
             </Show>
             <Button fluid type="submit" loading={isLoading()}>
               Sign In
