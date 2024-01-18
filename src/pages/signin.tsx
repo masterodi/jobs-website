@@ -55,7 +55,7 @@ const RegisterDialog = (props: any) => {
   );
 };
 
-const Login = () => {
+const Signin = () => {
   const { refetch } = useSessionContext();
   const [isRegisterOpen, setIsRegisterOpen] = createSignal(false);
   const { fields, fieldErrors, onInput, validate } = createFields({ email: '', password: '' });
@@ -113,4 +113,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Signin;

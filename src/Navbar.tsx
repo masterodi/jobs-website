@@ -28,7 +28,7 @@ const Navbar = () => {
         </ul>
       </div>
       <Show when={!session()}>
-        <Button onClick={() => navigate('/login')}>Get Started</Button>
+        <Button onClick={() => navigate('/signin')}>Get Started</Button>
       </Show>
       <Show when={session()}>
         <Button onClick={signOut}>Sign out</Button>
