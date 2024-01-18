@@ -1,10 +1,10 @@
 import { useNavigate } from '@solidjs/router';
-import { Show, createEffect, createResource } from 'solid-js';
-import { getSession } from '../api/authentication';
+import { Show, createEffect } from 'solid-js';
+import { useSessionContext } from '../Provider';
 
 const NoSessionGuard = (props: any) => {
   const navigate = useNavigate();
-  const [session] = createResource(getSession);
+  const { session } = useSessionContext();
 
   createEffect(() => {
     if (!session.loading && session()) {
