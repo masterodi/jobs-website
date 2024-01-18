@@ -1,11 +1,17 @@
 import { useNavigate } from '@solidjs/router';
 import { Show } from 'solid-js';
 import { useSessionContext } from './Provider';
+import { signOutUser } from './api/authentication';
 import Button from './components/Button';
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const { session } = useSessionContext();
+  const { session, refetch } = useSessionContext();
+
+  const signOut = async () => {
+    await signOutUser();
+    await refetch();
+  };
 
   return (
     <nav class="sticky top-0 flex h-[60px] items-center justify-between gap-12 bg-gray-600/75 px-4 backdrop-blur-sm">
@@ -25,7 +31,7 @@ const Navbar = () => {
         <Button onClick={() => navigate('/login')}>Get Started</Button>
       </Show>
       <Show when={session()}>
-        <Button onClick={() => {}}>Sign out</Button>
+        <Button onClick={signOut}>Sign out</Button>
       </Show>
     </nav>
   );

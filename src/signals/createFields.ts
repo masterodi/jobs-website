@@ -1,12 +1,24 @@
 import { createStore } from 'solid-js/store';
+import { Schema, ValidationError } from 'yup';
 
 type InputEv = InputEvent & {
   currentTarget: HTMLInputElement;
   target: HTMLInputElement;
 };
 
-const createFields = (initialValue: any) => {
+const initialFieldErrorsFromFields = <T extends Record<string, string>>(fields: T) => {
+  let fieldErrors = {} as { [key in keyof T]: string | null };
+
+  for (const k in fields) {
+    fieldErrors = { ...fieldErrors, [k]: null };
+  }
+
+  return fieldErrors;
+};
+
+const createFields = <T extends Record<string, string>>(initialValue: T) => {
   const [fields, setFields] = createStore(initialValue);
+  const [fieldErrors, setFieldErrors] = createStore(initialFieldErrorsFromFields(initialValue));
 
   const onInput = (e: InputEv) => {
     const name = e.currentTarget.name;
@@ -14,7 +26,25 @@ const createFields = (initialValue: any) => {
     setFields({ ...fields, [name]: value });
   };
 
-  return [fields, setFields, onInput];
+  const validate = async <G>(schema: Schema<G>) => {
+    try {
+      setFieldErrors(initialFieldErrorsFromFields(initialValue));
+      await schema.validate(fields, { abortEarly: false });
+      return true;
+    } catch (err) {
+      if (!(err instanceof ValidationError)) {
+        throw err;
+      }
+
+      for (const k of err.inner) {
+        setFieldErrors({ ...fieldErrors, ...(k.path && { [k.path]: k.message }) });
+      }
+
+      return false;
+    }
+  };
+
+  return { fields, fieldErrors, onInput, validate };
 };
 
 export default createFields;
