@@ -1,21 +1,16 @@
 import { Route, Router } from '@solidjs/router';
-import Navbar from './Navbar';
+import Layout from './Layout';
 import Home from './pages/home';
 import Login from './pages/login';
 import NoSessionGuard from './router/NoSessionGuard';
 
-function App(props: any) {
+export default function App() {
   return (
-    <>
-      <Navbar />
-      <Router root={App}>
-        <Route path="/" component={NoSessionGuard}>
-          <Route path="/login" component={Login} />
-        </Route>
-        <Route path="/" component={Home} />
-      </Router>
-    </>
+    <Router root={Layout}>
+      <Route path="/" component={NoSessionGuard}>
+        <Route path="/login" component={Login} />
+      </Route>
+      <Route path="/" component={Home} />
+    </Router>
   );
 }
-
-export default App;
