@@ -1,5 +1,6 @@
 import { Show, createSignal } from 'solid-js';
 import { useSessionContext } from '../Provider';
+import { BaseError } from '../api/Error';
 import { signInUser, signUpUser } from '../api/authentication';
 import Button from '../components/Button';
 import Dialog from '../components/Dialog';
@@ -11,6 +12,7 @@ const RegisterDialog = (props: any) => {
   const { refetch } = useSessionContext();
   const { fields, fieldErrors, onInput, validate } = createFields({ email: '', password: '' });
   const [isLoading, setIsLoading] = createSignal(false);
+  const [error, setError] = createSignal<string | null>(null);
 
   const register = async (e: SubmitEvent) => {
     e.preventDefault();
@@ -18,9 +20,15 @@ const RegisterDialog = (props: any) => {
     if (!(await validate(signinSchema))) return;
 
     try {
+      setError(null);
       setIsLoading(true);
       await signUpUser(fields);
       await refetch();
+    } catch (err) {
+      if (err instanceof BaseError) {
+        setError(err.message);
+      }
+      throw err;
     } finally {
       setIsLoading(false);
     }
@@ -47,6 +55,9 @@ const RegisterDialog = (props: any) => {
           invalid={!!fieldErrors.password}
           error={fieldErrors.password}
         />
+        <Show when={error()}>
+          <div class="font-semibold text-red-500">{error()}</div>
+        </Show>
         <Button fluid type="submit" loading={isLoading()}>
           Register
         </Button>
@@ -60,15 +71,22 @@ const Signin = () => {
   const [isRegisterOpen, setIsRegisterOpen] = createSignal(false);
   const { fields, fieldErrors, onInput, validate } = createFields({ email: '', password: '' });
   const [isLoading, setIsLoading] = createSignal(false);
+  const [error, setError] = createSignal<string | null>(null);
 
   const signIn = async (e: SubmitEvent) => {
     e.preventDefault();
     if (!(await validate(registerSchema))) return;
 
     try {
+      setError(null);
       setIsLoading(true);
       await signInUser(fields);
       await refetch();
+    } catch (err) {
+      if (err instanceof BaseError) {
+        setError(err.message);
+      }
+      throw err;
     } finally {
       setIsLoading(false);
     }
@@ -96,7 +114,10 @@ const Signin = () => {
               invalid={!!fieldErrors.password}
               error={fieldErrors.password}
             />
-            <Button fluid type="submit">
+            <Show when={error()}>
+              <div class="font-semibold text-red-500">{error()}</div>
+            </Show>
+            <Button fluid type="submit" loading={isLoading()}>
               Sign In
             </Button>
             <Button fluid type="button" onClick={() => setIsRegisterOpen((prev) => !prev)}>

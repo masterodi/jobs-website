@@ -26,6 +26,14 @@ export class BaseError extends Error {
     if (e.code === AuthErrorCodes.WEAK_PASSWORD) {
       throw new BaseError('Weak password');
     }
+
+    if (e.code === AuthErrorCodes.INVALID_LOGIN_CREDENTIALS) {
+      throw new BaseError('Invalid credentials');
+    }
+
+    if (e.code === AuthErrorCodes.EMAIL_EXISTS) {
+      throw new BaseError('Email already used');
+    }
   }
 }
 
