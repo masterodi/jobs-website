@@ -1,20 +1,73 @@
-import { Show, createSignal } from 'solid-js';
+import { Show } from 'solid-js';
 import { InferType } from 'yup';
 import { useSessionContext } from '../Provider';
 import { signInUser, signUpUser } from '../api/authentication';
 import Button from '../components/Button';
-import Dialog from '../components/Dialog';
+import Carousel, { useCarouselContext } from '../components/Carousel';
 import InputLabeled from '../components/InputLabeled';
 import { registerSchema, signinSchema } from '../schemas/form';
 import createFields from '../signals/createFields';
 import { useAction } from '../useAction';
 
-const RegisterDialog = (props: any) => {
+const SigninForm = (props: any) => {
+  const { refetch } = useSessionContext();
+  const { fields, fieldErrors, onInput, validate } = createFields({ email: '', password: '' });
+  const { execute, isLoading, error } = useAction({
+    action: (data: InferType<typeof signinSchema>) => signInUser(data),
+  });
+  const { index, setIndex } = useCarouselContext();
+
+  const signIn = async (e: SubmitEvent) => {
+    e.preventDefault();
+    if (!(await validate(signinSchema))) return;
+    await execute(fields);
+    if (!error()) {
+      await refetch();
+    }
+  };
+
+  return (
+    <Show when={index() === 0}>
+      <form onSubmit={signIn} class="w-full p-8 [&>*+*]:mt-8">
+        <h1 class="text-2xl font-bold">Enter Account</h1>
+        <InputLabeled
+          name="email"
+          id="email"
+          label="Email"
+          onInput={onInput}
+          invalid={!!fieldErrors.email}
+          error={fieldErrors.email}
+        />
+        <InputLabeled
+          name="password"
+          id="password"
+          label="Password"
+          type="password"
+          onInput={onInput}
+          invalid={!!fieldErrors.password}
+          error={fieldErrors.password}
+        />
+        <Show when={error()}>
+          <div class="font-semibold text-red-500">{error()?.message}</div>
+        </Show>
+        <Button fluid type="submit" loading={isLoading()}>
+          Sign In
+        </Button>
+        <Button fluid type="button" onClick={() => setIndex(1)}>
+          No account? Register here
+        </Button>
+      </form>
+    </Show>
+  );
+};
+
+const RegisterForm = (props: any) => {
   const { refetch } = useSessionContext();
   const { fields, fieldErrors, onInput, validate } = createFields({ email: '', password: '' });
   const { execute, isLoading, error } = useAction({
     action: (data: InferType<typeof registerSchema>) => signUpUser(data),
   });
+  const { index, setIndex } = useCarouselContext();
 
   const register = async (e: SubmitEvent) => {
     e.preventDefault();
@@ -26,9 +79,9 @@ const RegisterDialog = (props: any) => {
   };
 
   return (
-    <Dialog open={props.open} setOpen={props.setOpen}>
-      <h1 class="text-2xl font-bold">Create account</h1>
-      <form onSubmit={register} class="mx-auto mt-8 max-w-3xl lg:min-w-80 [&>*+*]:mt-8">
+    <Show when={index() === 1}>
+      <form onSubmit={register} class="w-full p-8 [&>*+*]:mt-8">
+        <h1 class="text-2xl font-bold">Create Account</h1>
         <InputLabeled
           name="email"
           id="email"
@@ -52,66 +105,25 @@ const RegisterDialog = (props: any) => {
         <Button fluid type="submit" loading={isLoading()}>
           Register
         </Button>
+        <Button fluid type="button" onClick={() => setIndex(0)}>
+          I already have an account
+        </Button>
       </form>
-    </Dialog>
+    </Show>
   );
 };
 
 const Signin = () => {
-  const { refetch } = useSessionContext();
-  const [isRegisterOpen, setIsRegisterOpen] = createSignal(false);
-  const { fields, fieldErrors, onInput, validate } = createFields({ email: '', password: '' });
-  const { execute, isLoading, error } = useAction({
-    action: (data: InferType<typeof signinSchema>) => signInUser(data),
-  });
-
-  const signIn = async (e: SubmitEvent) => {
-    e.preventDefault();
-    if (!(await validate(signinSchema))) return;
-    await execute(fields);
-    if (!error()) {
-      await refetch();
-    }
-  };
-
   return (
     <>
-      <div class="m-4">
-        <div class="grid min-h-[80vh] place-items-center">
-          <form onSubmit={signIn} class="mx-auto w-full max-w-3xl [&>*+*]:mt-8">
-            <InputLabeled
-              name="email"
-              id="email"
-              label="Email"
-              onInput={onInput}
-              invalid={!!fieldErrors.email}
-              error={fieldErrors.email}
-            />
-            <InputLabeled
-              name="password"
-              id="password"
-              label="Password"
-              type="password"
-              onInput={onInput}
-              invalid={!!fieldErrors.password}
-              error={fieldErrors.password}
-            />
-            <Show when={error()}>
-              <div class="font-semibold text-red-500">{error()?.message}</div>
-            </Show>
-            <Button fluid type="submit" loading={isLoading()}>
-              Sign In
-            </Button>
-            <Button fluid type="button" onClick={() => setIsRegisterOpen((prev) => !prev)}>
-              No account? Register here
-            </Button>
-          </form>
+      <div class="grid min-h-screen place-items-center bg-gradient-to-b from-indigo-500 to-indigo-100 p-4">
+        <div class="w-full max-w-lg rounded-lg bg-white p-8 shadow-md">
+          <Carousel>
+            <SigninForm />
+            <RegisterForm />
+          </Carousel>
         </div>
       </div>
-
-      <Show when={isRegisterOpen()}>
-        <RegisterDialog open={isRegisterOpen} setOpen={setIsRegisterOpen} />
-      </Show>
     </>
   );
 };
