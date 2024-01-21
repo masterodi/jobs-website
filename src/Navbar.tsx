@@ -14,10 +14,10 @@ const Navbar = () => {
   };
 
   return (
-    <nav class="sticky top-0 flex h-[60px] items-center justify-between gap-12 bg-gray-600/75 px-4 backdrop-blur-sm">
+    <nav class="sticky top-0 flex h-[60px] items-center justify-between gap-12 bg-white px-4 backdrop-blur-sm">
       <div class="flex items-center gap-8">
-        <h2 class="text-2xl font-bold">
-          <a href="/">Placeholder</a>
+        <h2 class="text-xl font-bold">
+          <a href="/">Place</a>
         </h2>
         <ul>
           <li>
