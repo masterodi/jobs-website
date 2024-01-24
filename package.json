@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "seed": "npx tsx src/api/seed.ts"
   },
   "dependencies": {
     "@solidjs/router": "^0.10.9",
@@ -24,6 +25,7 @@
     "tailwindcss": "^3.4.1",
     "typescript": "^5.2.2",
     "vite": "^5.0.8",
-    "vite-plugin-solid": "^2.8.0"
+    "vite-plugin-solid": "^2.8.0",
+    "vite-plugin-solid-svg": "^0.8.0"
   }
 }

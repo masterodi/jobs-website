@@ -14,7 +14,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav class="sticky top-0 flex h-[60px] items-center justify-between gap-12 bg-white px-4 backdrop-blur-sm">
+    <nav class="sticky top-0 z-30 flex h-[60px] items-center justify-between gap-12 bg-white/75 px-4 backdrop-blur-sm">
       <div class="flex items-center gap-8">
         <h2 class="text-xl font-bold">
           <a href="/">Place</a>
