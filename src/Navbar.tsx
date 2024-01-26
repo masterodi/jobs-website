@@ -21,7 +21,7 @@ const Navbar = () => {
         </h2>
         <ul>
           <li>
-            <a class="text-lg" href="#">
+            <a class="text-lg" href="/jobs">
               Jobs
             </a>
           </li>
