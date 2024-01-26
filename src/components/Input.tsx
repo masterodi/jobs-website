@@ -4,7 +4,7 @@ const Input = (props: any) => {
   const [local, others] = splitProps(props, ['class', 'classList', 'invalid']);
   return (
     <input
-      class="rounded-md bg-indigo-500/25 px-2 py-2 focus:bg-indigo-500/35"
+      class="bg-primary-500/25 focus:bg-primary-500/35 rounded-md px-2 py-2"
       classList={{ 'border-2 border-red-500': local.invalid }}
       aria-invalid={local.invalid}
       {...others}

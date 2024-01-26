@@ -6,7 +6,7 @@ const Button = (props: any) => {
   const c = children(() => props.children);
   return (
     <button
-      class="relative rounded-md bg-indigo-500 px-4 py-2 outline-none focus:outline-indigo-500 active:bg-indigo-600 disabled:cursor-not-allowed disabled:bg-indigo-500/75"
+      class="bg-primary-500 focus:outline-primary-500 active:bg-primary-600 disabled:bg-primary-500/75 relative rounded-md px-4 py-2 outline-none disabled:cursor-not-allowed"
       classList={{ 'w-full': props.fluid }}
       disabled={props.loading}
       {...rest}

@@ -13,18 +13,18 @@ const JobsLoading = () => {
 const CardJob = (props: any) => {
   return (
     <div
-      class="block cursor-pointer rounded-lg border-2 bg-gray-50 p-4 shadow-md transition-all duration-200 ease-in-out hover:brightness-[101%]"
-      classList={{ 'border-transparent': !props.active, 'border-indigo-500': props.active }}
+      class="block cursor-pointer rounded-lg border-2 bg-neutral-50 p-4 shadow-md transition-all duration-200 ease-in-out hover:brightness-[101%]"
+      classList={{ 'border-transparent': !props.active, 'border-primary-500': props.active }}
       onClick={props.onClick}
     >
       <div class="flex flex-col gap-8">
         <div class="flex justify-between gap-8">
           <h4>
             <strong class="text-lg">{props.job.job_title}</strong> at{' '}
-            <span class="text-indigo-500">{props.job.company_name}</span>
+            <span class="text-primary-500">{props.job.company_name}</span>
           </h4>
           <div class="text-end">
-            <p class="text-nowrap text-gray-500">{props.job.employment_type}</p>
+            <p class="text-nowrap text-neutral-500">{props.job.employment_type}</p>
           </div>
         </div>
         <div>
@@ -41,7 +41,7 @@ const PanelJob = (props: any) => {
   return (
     <>
       <div class="flex gap-4">
-        <div class="h-16 w-16 rounded-lg border-2 border-indigo-500" />
+        <div class="border-primary-500 h-16 w-16 rounded-lg border-2" />
         <div class="flex-1">
           <h3 class="text-2xl font-bold">{props.job.job_title}</h3>
           <p class="mt-2 text-sm">
@@ -78,10 +78,10 @@ const Jobs = () => {
 
   return (
     <Show when={!jobs.loading} fallback={<JobsLoading />}>
-      <section class="bg-indigo-900">
+      <section class="bg-primary-900">
         <div class="container mx-auto flex flex-col justify-center px-8 py-16">
           <h1 class="mb-1 font-accent text-4xl font-bold text-white">Available jobs</h1>
-          <p class="text-gray-200">Looking for a job? Browse our latest job openings</p>
+          <p class="text-neutral-200">Looking for a job? Browse our latest job openings</p>
         </div>
       </section>
 
@@ -96,7 +96,7 @@ const Jobs = () => {
               </For>
             </div>
 
-            <div class="basis-2/3 overflow-y-auto rounded-lg bg-gray-50 p-8 shadow-md">
+            <div class="basis-2/3 overflow-y-auto rounded-lg bg-neutral-50 p-8 shadow-md">
               <Show when={selectedJob()} fallback={<h4 class="text-lg">Select a job to see more details</h4>}>
                 <PanelJob job={selectedJob()} />
               </Show>

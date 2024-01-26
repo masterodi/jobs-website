@@ -116,7 +116,7 @@ const RegisterForm = (props: any) => {
 const Signin = () => {
   return (
     <>
-      <div class="grid min-h-screen place-items-center bg-gradient-to-b from-indigo-500 to-indigo-100 p-4">
+      <div class="from-primary-500 to-primary-100 grid min-h-screen place-items-center bg-gradient-to-b p-4">
         <div class="w-full max-w-lg rounded-lg bg-white p-8 shadow-md">
           <Carousel>
             <SigninForm />

@@ -69,7 +69,7 @@ const Home = () => {
         </div>
       </section>
 
-      <section class="bg-gray-100">
+      <section class="bg-neutral-100">
         <div class="container mx-auto px-4 py-16">
           <h1 class="mb-16 text-center text-6xl font-bold">What are you waiting for?</h1>
           <div>
