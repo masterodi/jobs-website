@@ -78,12 +78,12 @@ const Jobs = () => {
 
   return (
     <Show when={!jobs.loading} fallback={<JobsLoading />}>
-      <section class="bg-primary-900">
+      <header class="bg-primary-900">
         <div class="container mx-auto flex flex-col justify-center px-8 py-16">
           <h1 class="mb-1 font-accent text-4xl font-bold text-white">Available jobs</h1>
           <p class="text-neutral-200">Looking for a job? Browse our latest job openings</p>
         </div>
-      </section>
+      </header>
 
       <section>
         <div class="container mx-auto p-8">
