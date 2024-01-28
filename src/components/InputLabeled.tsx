@@ -1,7 +1,12 @@
-import { Show, splitProps } from 'solid-js';
-import Input from './Input';
+import { Component, Show, splitProps } from 'solid-js';
+import Input, { InputProps } from './Input';
 
-const InputLabeled = (props: any) => {
+type InputLabeledProps = InputProps & {
+  label?: string;
+  error?: string | null;
+};
+
+const InputLabeled: Component<InputLabeledProps> = (props) => {
   const [local, others] = splitProps(props, ['label', 'error']);
 
   return (

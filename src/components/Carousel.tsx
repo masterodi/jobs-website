@@ -1,18 +1,17 @@
-import { For, createContext, createSignal, useContext } from 'solid-js';
+import { Accessor, Component, For, JSX, Setter, createContext, createSignal, useContext } from 'solid-js';
 
-const CarouselContext = createContext();
-
-export const useCarouselContext = () => {
-  const ctx = useContext(CarouselContext);
-
-  if (!ctx) {
-    throw new Error('useCarouselContext must be called inside a child');
-  }
-
-  return ctx;
+type CarouselContextProps = {
+  index: Accessor<number>;
+  setIndex: Setter<number>;
 };
 
-const Carousel = (props: any) => {
+const CarouselContext = createContext<CarouselContextProps>();
+
+type CarouselProps = {
+  children?: JSX.Element[];
+};
+
+const Carousel: Component<CarouselProps> = (props) => {
   const [index, setIndex] = createSignal(0);
 
   return (
@@ -20,7 +19,7 @@ const Carousel = (props: any) => {
       <div class="h-full w-full">
         <div class="flex h-full w-full overflow-hidden">
           <For each={props.children}>
-            {(child, i) => (
+            {(child, _) => (
               <div
                 class="h-full w-full flex-shrink-0 flex-grow-0 transition-all duration-300 ease-in-out"
                 style={{ translate: `${-100 * index()}%` }}
@@ -36,3 +35,13 @@ const Carousel = (props: any) => {
 };
 
 export default Carousel;
+
+export const useCarouselContext = () => {
+  const ctx = useContext(CarouselContext);
+
+  if (!ctx) {
+    throw new Error('useCarouselContext must be called inside a child');
+  }
+
+  return ctx;
+};

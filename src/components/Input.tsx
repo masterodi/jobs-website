@@ -1,10 +1,15 @@
-import { splitProps } from 'solid-js';
+import { Component, JSX, splitProps } from 'solid-js';
 
-const Input = (props: any) => {
+export type InputProps = JSX.InputHTMLAttributes<HTMLInputElement> & {
+  invalid?: boolean;
+  fluid?: boolean;
+};
+
+const Input: Component<InputProps> = (props) => {
   const [local, others] = splitProps(props, ['class', 'classList', 'invalid', 'fluid']);
   return (
     <input
-      class="bg-primary-500/25 focus:bg-primary-500/35 rounded-md px-2 py-2"
+      class="rounded-md bg-primary-500/25 px-2 py-2 focus:bg-primary-500/35"
       classList={{ 'border-2 border-red-500': local.invalid, 'w-full': local.fluid }}
       aria-invalid={local.invalid}
       {...others}

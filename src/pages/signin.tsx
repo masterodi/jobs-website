@@ -5,11 +5,11 @@ import { signInUser, signUpUser } from '../api/authentication';
 import Button from '../components/Button';
 import Carousel, { useCarouselContext } from '../components/Carousel';
 import InputLabeled from '../components/InputLabeled';
-import { registerSchema, signinSchema } from '../schemas/form';
+import { registerSchema, signinSchema } from '../schemas';
 import createFields from '../signals/createFields';
 import { useAction } from '../useAction';
 
-const SigninForm = (props: any) => {
+const SigninForm = () => {
   const { refetch } = useSessionContext();
   const { fields, fieldErrors, onInput, validate } = createFields({ email: '', password: '' });
   const { execute, isLoading, error } = useAction({
@@ -61,7 +61,7 @@ const SigninForm = (props: any) => {
   );
 };
 
-const RegisterForm = (props: any) => {
+const RegisterForm = () => {
   const { refetch } = useSessionContext();
   const { fields, fieldErrors, onInput, validate } = createFields({ email: '', password: '' });
   const { execute, isLoading, error } = useAction({
@@ -116,7 +116,7 @@ const RegisterForm = (props: any) => {
 const Signin = () => {
   return (
     <>
-      <div class="from-primary-500 to-primary-100 grid min-h-screen place-items-center bg-gradient-to-b p-4">
+      <div class="grid min-h-screen place-items-center bg-gradient-to-b from-primary-500 to-primary-100 p-4">
         <div class="w-full max-w-lg rounded-lg bg-white p-8 shadow-md">
           <Carousel>
             <SigninForm />

@@ -1,12 +1,19 @@
-import { Show, children, splitProps } from 'solid-js';
+import { Component, JSX, Show, children, splitProps } from 'solid-js';
 import LoadingIndicator from './LoadingIndicator';
 
-const Button = (props: any) => {
+type ButtonProps = JSX.ButtonHTMLAttributes<HTMLButtonElement> & {
+  loading?: boolean;
+  fluid?: boolean;
+  children: JSX.Element;
+};
+
+const Button: Component<ButtonProps> = (props) => {
   const [_, rest] = splitProps(props, ['class', 'disabled', 'children']);
   const c = children(() => props.children);
+
   return (
     <button
-      class="bg-primary-500 focus:outline-primary-500 active:bg-primary-600 disabled:bg-primary-500/75 relative rounded-md px-4 py-2 outline-none disabled:cursor-not-allowed"
+      class="relative rounded-md bg-primary-500 px-4 py-2 outline-none focus:outline-primary-500 active:bg-primary-600 disabled:cursor-not-allowed disabled:bg-primary-500/75"
       classList={{ 'w-full': props.fluid }}
       disabled={props.loading}
       {...rest}

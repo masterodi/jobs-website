@@ -1,7 +1,13 @@
-import { children, createEffect, onCleanup, onMount } from 'solid-js';
+import { Accessor, Component, JSX, Setter, children, createEffect, onCleanup, onMount } from 'solid-js';
 import { Portal } from 'solid-js/web';
 
-const Dialog = (props: any) => {
+type DialogProps = {
+  open: Accessor<boolean>;
+  setOpen: Setter<boolean>;
+  children: JSX.Element;
+};
+
+const Dialog: Component<DialogProps> = (props) => {
   let dialogRef: HTMLDialogElement;
   const c = children(() => props.children);
 

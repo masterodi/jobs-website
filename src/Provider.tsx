@@ -1,6 +1,6 @@
-import { User } from 'firebase/auth';
 import { Resource, createContext, createResource, useContext } from 'solid-js';
 import { getSession } from './api/authentication';
+import { User } from './types';
 
 type SessionContextProps = {
   session: Resource<User | null>;

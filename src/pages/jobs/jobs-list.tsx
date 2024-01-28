@@ -1,9 +1,16 @@
-import { For, Show } from 'solid-js';
+import { Component, For, Setter, Show } from 'solid-js';
 import Input from '../../components/Input';
 import LoadingIndicator from '../../components/LoadingIndicator';
+import { Job } from '../../types';
 import { useJobsContext } from './jobs-provider';
 
-const JobCard = (props: any) => {
+type JobCardProps = {
+  active?: boolean;
+  onClick: (event: MouseEvent) => void;
+  job: Job;
+};
+
+const JobCard: Component<JobCardProps> = (props) => {
   return (
     <div
       class="block cursor-pointer rounded-lg border-2 bg-neutral-50 p-4 shadow-md transition-all duration-200 ease-in-out hover:brightness-[101%]"
@@ -39,7 +46,12 @@ const JobsListLoading = () => {
   );
 };
 
-const JobsList = (props: any) => {
+type JobsListProps = {
+  selectedJob?: Job;
+  setSelectedJob: Setter<Job | undefined>;
+};
+
+const JobsList: Component<JobsListProps> = (props) => {
   const { jobs, filteredJobs, filters } = useJobsContext();
 
   return (
@@ -60,7 +72,7 @@ const JobsList = (props: any) => {
 
       <div class="mt-8 max-h-screen overflow-y-auto overflow-x-hidden [&>*+*]:mt-4">
         <For each={filteredJobs()}>
-          {(job, i) => (
+          {(job, _) => (
             <JobCard job={job} active={job.id === props.selectedJob?.id} onClick={() => props.setSelectedJob(job)} />
           )}
         </For>

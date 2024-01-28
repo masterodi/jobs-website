@@ -1,8 +1,8 @@
 import { useNavigate } from '@solidjs/router';
-import { Show, createEffect } from 'solid-js';
+import { ParentComponent, Show, createEffect } from 'solid-js';
 import { useSessionContext } from '../Provider';
 
-const NoSessionGuard = (props: any) => {
+const NoSessionGuard: ParentComponent = (props) => {
   const navigate = useNavigate();
   const { session } = useSessionContext();
 

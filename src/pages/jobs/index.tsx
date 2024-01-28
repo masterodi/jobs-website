@@ -1,11 +1,12 @@
 import { createSignal } from 'solid-js';
+import { Job } from '../../types';
 import JobPanel from './job-panel';
 import JobsFilters from './jobs-filters';
 import JobsList from './jobs-list';
 import { JobsProvider } from './jobs-provider';
 
 const Jobs = () => {
-  const [selectedJob, setSelectedJob] = createSignal(null);
+  const [selectedJob, setSelectedJob] = createSignal<Job>();
 
   return (
     <JobsProvider>

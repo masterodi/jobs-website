@@ -1,8 +1,17 @@
 import { createContext, createResource, useContext } from 'solid-js';
-import { createStore } from 'solid-js/store';
+import { SetStoreFunction, createStore } from 'solid-js/store';
 import { getJobs } from '../../api/jobs';
+import { Job } from '../../types';
 
-const JobsContext = createContext(null);
+type JobsContextProps = {
+  jobs: ReturnType<typeof createResource<Job[]>>[0];
+  refetch: ReturnType<typeof createResource<Job[]>>[1]['refetch'];
+  filters: { searchValue: string; sort: { by: string; order: string } };
+  setFilters: SetStoreFunction<{ searchValue: string; sort: { by: string; order: string } }>;
+  filteredJobs: () => Job[];
+};
+
+const JobsContext = createContext<JobsContextProps>();
 
 export const JobsProvider = (props: any) => {
   const [jobs, { refetch }] = createResource([], getJobs);
