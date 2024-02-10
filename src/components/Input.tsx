@@ -9,7 +9,7 @@ const Input: Component<InputProps> = (props) => {
   const [local, others] = splitProps(props, ['class', 'classList', 'invalid', 'fluid']);
   return (
     <input
-      class="rounded-md bg-primary-500/25 px-2 py-2 focus:bg-primary-500/35"
+      class="rounded-md bg-primary-500/25 p-2 focus:bg-primary-500/35"
       classList={{ 'border-2 border-red-500': local.invalid, 'w-full': local.fluid }}
       aria-invalid={local.invalid}
       {...others}

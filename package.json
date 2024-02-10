@@ -6,8 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview",
-    "seed": "npx tsx src/api/seed.ts"
+    "preview": "vite preview"
   },
   "dependencies": {
     "@solidjs/router": "^0.10.9",
