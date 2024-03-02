@@ -1,8 +1,8 @@
 import { Component, For, Setter, Show } from 'solid-js';
-import Input from '../../components/Input';
 import LoadingIndicator from '../../components/LoadingIndicator';
+import Select from '../../components/Select';
 import { Job } from '../../types';
-import { useJobsContext } from './jobs-provider';
+import { orderOptions, useJobsContext } from './jobs-provider';
 
 type JobCardProps = {
   active?: boolean;
@@ -41,7 +41,7 @@ const JobsListLoading = () => {
   return (
     <div class="grid place-items-center">
       <LoadingIndicator />
-      <p class="mt-1 text-sm font-semibold">Getting jobs ready... Please wait</p>
+      <p class="mt-1 text-sm font-semibold">Getting jobs... Please wait</p>
     </div>
   );
 };
@@ -52,32 +52,36 @@ type JobsListProps = {
 };
 
 const JobsList: Component<JobsListProps> = (props) => {
-  const { jobs, filteredJobs, filters } = useJobsContext();
+  const { jobs, searchSignal, orderSignal, setOrderSignal } = useJobsContext();
+  const filteredJobs = () =>
+    jobs()?.filter((val) => val.job_title.toLowerCase().includes(searchSignal().toLowerCase())) ?? [];
 
   return (
-    <Show when={!jobs.loading} fallback={<JobsListLoading />}>
+    <>
       <div class="flex justify-between">
-        <div>
+        <div class="w-2/3">
           <h4 class="text-xl font-bold">
-            <Show when={filters.searchValue !== ''} fallback="All jobs listed">
-              Related to '{filters.searchValue}'
+            <Show when={searchSignal() !== ''} fallback="All jobs listed">
+              Related to '{searchSignal()}'
             </Show>
           </h4>
           <p>{filteredJobs().length} jobs available</p>
         </div>
-        <div>
-          <Input />
+        <div class="w-1/3">
+          <Select options={orderOptions} value={orderSignal()} onChange={setOrderSignal} />
         </div>
       </div>
 
       <div class="mt-8 max-h-screen overflow-y-auto overflow-x-hidden [&>*+*]:mt-4">
-        <For each={filteredJobs()}>
-          {(job, _) => (
-            <JobCard job={job} active={job.id === props.selectedJob?.id} onClick={() => props.setSelectedJob(job)} />
-          )}
-        </For>
+        <Show when={!jobs.loading} fallback={<JobsListLoading />}>
+          <For each={filteredJobs()}>
+            {(job, _) => (
+              <JobCard job={job} active={job.id === props.selectedJob?.id} onClick={() => props.setSelectedJob(job)} />
+            )}
+          </For>
+        </Show>
       </div>
-    </Show>
+    </>
   );
 };
 
