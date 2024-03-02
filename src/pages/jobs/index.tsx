@@ -26,7 +26,7 @@ const Jobs = () => {
       <section class="py-4">
         <div class="container mx-auto p-8">
           <div class="flex gap-8">
-            <div class="basis-1/3">
+            <div class="max-w-[33.33%] basis-1/3">
               <JobsList selectedJob={selectedJob()} setSelectedJob={setSelectedJob} />
             </div>
 
