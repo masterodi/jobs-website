@@ -1,39 +1,47 @@
 import { Accessor, Resource, Setter, createContext, createResource, createSignal, useContext } from 'solid-js';
 import { JOBS_ORDER, getJobs, getJobsEmploymentTypes, getJobsIndustries, getJobsSkills } from '../../api/jobs';
-import { Option } from '../../components/Select';
+import { MultiValue, SingleValue } from '../../components/Select';
 import { Job, JobsOrder } from '../../types';
+
+type Option = { value: string; label: string };
 
 type JobsContextProps = {
   jobs: ReturnType<typeof createResource<Job[]>>[0];
   refetch: ReturnType<typeof createResource<Job[]>>[1]['refetch'];
-  skills: Resource<string[]>;
-  industries: Resource<string[]>;
-  employmentTypes: Resource<string[]>;
+
   searchSignal: Accessor<string>;
   setSearchSignal: Setter<string>;
-  orderSignal: Accessor<Option>;
-  setOrderSignal: Setter<Option>;
-  skillsSignal: Accessor<Option[] | undefined>;
-  setSkillsSignal: Setter<Option[] | undefined>;
-  industriesSignal: Accessor<Option[] | undefined>;
-  setIndustriesSignal: Setter<Option[] | undefined>;
-  employmentTypesSignal: Accessor<Option[] | undefined>;
-  setEmploymentTypesSignal: Setter<Option[] | undefined>;
+
+  orderOptions: { value: JobsOrder; label: string }[];
+  orderSignal: Accessor<SingleValue<{ value: JobsOrder; label: string }>>;
+  setOrderSignal: Setter<SingleValue<{ value: JobsOrder; label: string }>>;
+
+  skills: Resource<string[]>;
+  skillsSignal: Accessor<MultiValue<Option> | undefined>;
+  setSkillsSignal: Setter<MultiValue<Option> | undefined>;
+
+  industries: Resource<string[]>;
+  industriesSignal: Accessor<MultiValue<Option> | undefined>;
+  setIndustriesSignal: Setter<MultiValue<Option> | undefined>;
+
+  employmentTypes: Resource<string[]>;
+  employmentTypesSignal: Accessor<MultiValue<Option> | undefined>;
+  setEmploymentTypesSignal: Setter<MultiValue<Option> | undefined>;
 };
 
 const JobsContext = createContext<JobsContextProps>();
 
-export const orderOptions = [
+const orderOptions = [
   { value: JOBS_ORDER.JOB_TITLE.ASC, label: 'A to Z' },
   { value: JOBS_ORDER.JOB_TITLE.DESC, label: 'Z to A' },
 ] as { value: JobsOrder; label: string }[];
 
 export const JobsProvider = (props: any) => {
   const [searchSignal, setSearchSignal] = createSignal('');
-  const [orderSignal, setOrderSignal] = createSignal<Option>(orderOptions[0]);
-  const [skillsSignal, setSkillsSignal] = createSignal<Option[]>();
-  const [industriesSignal, setIndustriesSignal] = createSignal<Option[]>();
-  const [employmentTypesSignal, setEmploymentTypesSignal] = createSignal<Option[]>();
+  const [orderSignal, setOrderSignal] = createSignal<SingleValue<{ value: JobsOrder; label: string }>>(orderOptions[0]);
+  const [skillsSignal, setSkillsSignal] = createSignal<MultiValue<Option>>();
+  const [industriesSignal, setIndustriesSignal] = createSignal<MultiValue<Option>>();
+  const [employmentTypesSignal, setEmploymentTypesSignal] = createSignal<MultiValue<Option>>();
 
   const [skills] = createResource(getJobsSkills);
   const [industries] = createResource(getJobsIndustries);
@@ -42,7 +50,7 @@ export const JobsProvider = (props: any) => {
     () => [orderSignal(), skillsSignal(), industriesSignal(), employmentTypesSignal()] as const,
     ([orderVal, skillsVal, industriesVal, employmentTypesVal]) =>
       getJobs({
-        order: orderVal.value as JobsOrder,
+        order: orderVal!.value as JobsOrder,
         skills:
           skillsVal?.reduce((acc, curr) => {
             return [...acc, curr.value];
@@ -65,15 +73,16 @@ export const JobsProvider = (props: any) => {
         refetch,
         searchSignal,
         setSearchSignal,
+        orderOptions,
         orderSignal,
         setOrderSignal,
         skills,
-        industries,
-        employmentTypes,
         skillsSignal,
         setSkillsSignal,
+        industries,
         industriesSignal,
         setIndustriesSignal,
+        employmentTypes,
         employmentTypesSignal,
         setEmploymentTypesSignal,
       }}

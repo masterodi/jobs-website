@@ -31,7 +31,7 @@ const Home = () => {
         <div class="container mx-auto px-4 py-16">
           <h1 class="mb-16 text-center text-6xl font-bold">Why us?</h1>
           <div class="flex flex-col gap-4 lg:flex-row [&>*]:w-full">
-            <Card>
+            <Card variant="primary">
               <div class="mx-auto w-28 [&>svg]:h-full [&>svg]:w-full">
                 <WorldIcon />
               </div>
@@ -43,7 +43,7 @@ const Home = () => {
               </div>
             </Card>
 
-            <Card>
+            <Card variant="primary">
               <div class="mx-auto w-28 [&>svg]:h-full [&>svg]:w-full">
                 <RocketLunchIcon />
               </div>
@@ -53,7 +53,7 @@ const Home = () => {
               </div>
             </Card>
 
-            <Card>
+            <Card variant="primary">
               <div class="mx-auto w-28 [&>svg]:h-full [&>svg]:w-full">
                 <HandshakeIcon />
               </div>

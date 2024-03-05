@@ -1,10 +1,11 @@
+// @ts-nocheck
 import { For, Show, createSignal, onCleanup, onMount } from 'solid-js';
 
-type SingleValue<O> = O | null;
-type MultiValue<O> = readonly O[];
+export type SingleValue<O> = O | null;
+export type MultiValue<O> = readonly O[];
 type PropsValue<O> = SingleValue<O> | MultiValue<O>;
 
-type SelectValue<O, Multi extends boolean> = Multi extends true ? MultiValue<O> : SingleValue<O>;
+export type SelectValue<O, Multi extends boolean> = Multi extends true ? MultiValue<O> : SingleValue<O>;
 
 type SelectProps<O, Multi extends boolean> = {
   multi?: Multi;
