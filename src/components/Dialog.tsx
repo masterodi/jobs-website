@@ -1,8 +1,8 @@
-import { Accessor, Component, JSX, Setter, children, createEffect, onCleanup, onMount } from 'solid-js';
+import { Component, JSX, Setter, children, createEffect, onCleanup, onMount } from 'solid-js';
 import { Portal } from 'solid-js/web';
 
 type DialogProps = {
-  open: Accessor<boolean>;
+  open: boolean;
   setOpen: Setter<boolean>;
   children: JSX.Element;
 };
@@ -19,12 +19,12 @@ const Dialog: Component<DialogProps> = (props) => {
   };
 
   createEffect(() => {
-    if (props.open()) {
+    if (props.open) {
       dialogRef.showModal();
     } else {
       dialogRef.close();
     }
-    document.body.style.overflow = props.open() ? 'hidden' : 'unset';
+    document.body.style.overflow = props.open ? 'hidden' : 'unset';
   });
 
   onMount(() => {
