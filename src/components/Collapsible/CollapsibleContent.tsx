@@ -7,7 +7,12 @@ const CollapsibleContent = (props: any) => {
   const maxHeight = () => (!open() ? '0px' : `${contentRef.scrollHeight}px`);
 
   return (
-    <div role="region" ref={contentRef!} class="transition-md overflow-hidden" style={{ 'max-height': maxHeight() }}>
+    <div
+      role="region"
+      ref={contentRef!}
+      class="transition-md my-2 overflow-hidden"
+      style={{ 'max-height': maxHeight() }}
+    >
       {props.children}
     </div>
   );
