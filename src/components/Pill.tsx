@@ -1,3 +1,4 @@
+import { HiSolidXMark } from 'solid-icons/hi';
 import { Show } from 'solid-js';
 
 const Pill = (props: any) => {
@@ -16,9 +17,9 @@ const Pill = (props: any) => {
       <Show when={!!props.onDelete}>
         <button
           onClick={handleDelete}
-          class="h-[24px] w-[24px] rounded-full border-2 border-neutral-800 px-1 hover:bg-neutral-600 hover:text-red-400"
+          class="flex h-[24px] w-[24px] items-center justify-center px-1 hover:text-red-400"
         >
-          X
+          <HiSolidXMark size={18} />
         </button>
       </Show>
     </div>
