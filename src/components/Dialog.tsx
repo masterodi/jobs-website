@@ -4,6 +4,7 @@ import { Portal } from 'solid-js/web';
 type DialogProps = {
   open: boolean;
   setOpen: Setter<boolean>;
+  afterClose?: () => void;
   children: JSX.Element;
 };
 
@@ -16,6 +17,7 @@ const Dialog: Component<DialogProps> = (props) => {
       return;
     }
     props.setOpen(false);
+    props.afterClose?.();
   };
 
   createEffect(() => {
@@ -39,7 +41,7 @@ const Dialog: Component<DialogProps> = (props) => {
 
   return (
     <Portal mount={document.body}>
-      <dialog ref={dialogRef!} class="w-[80%] max-w-lg rounded-lg backdrop:bg-black/25 backdrop:backdrop-blur-sm">
+      <dialog ref={dialogRef!} class="w-[80%] max-w-2xl rounded-lg backdrop:bg-black/25 backdrop:backdrop-blur-sm">
         <div class="p-8 lg:p-12">{c()}</div>
       </dialog>
     </Portal>
