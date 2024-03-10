@@ -4,7 +4,6 @@ import { Portal } from 'solid-js/web';
 type DialogProps = {
   open: boolean;
   setOpen: Setter<boolean>;
-  afterClose?: () => void;
   children: JSX.Element;
 };
 
