@@ -2,7 +2,7 @@ import HandshakeIcon from '../assets/icons/handshake.svg';
 import RocketLunchIcon from '../assets/icons/rocket-lunch.svg';
 import WorldIcon from '../assets/icons/world.svg';
 import Button from '../components/Button';
-import Card from '../components/Card';
+import { Card } from '../components/Card';
 
 const Home = () => {
   return (
