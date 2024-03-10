@@ -1,156 +1,59 @@
-import { For, Show, createSignal } from 'solid-js';
-import Card from '../../components/Card';
+import { BiRegularFilter, BiRegularSearchAlt } from 'solid-icons/bi';
+import { For, createSignal } from 'solid-js';
 import Input from '../../components/Input';
-import LoadingIndicator from '../../components/LoadingIndicator';
-import Select from '../../components/Select';
-import { Job } from '../../types';
+import CardJob from './CardJob';
+import DialogJobDetails from './DialogJobDetailsl';
+import DialogJobsFilters from './DialogJobsFilters';
 import { JobsProvider, useJobsContext } from './jobs-provider';
 
 const Content = () => {
-  const ctx = useJobsContext();
-  const [selectedJob, setSelectedJob] = createSignal<Job>();
-  const filteredJobs = () =>
-    ctx.jobs()?.filter((val) => val.job_title.toLowerCase().includes(ctx.searchSignal().toLowerCase())) ?? [];
+  const { jobs, filters } = useJobsContext();
+  const [areFiltersOpen, setAreFiltersOpen] = createSignal(false);
+  const searchedJobs = () =>
+    jobs()?.filter((job) => job.job_title.toLowerCase().includes(filters.search().toLowerCase()));
 
   return (
     <>
-      <header class="bg-primary-900">
-        <div class="container mx-auto flex flex-col justify-center gap-1 px-8 py-16 text-neutral-50">
-          <h1 class="font-accent text-4xl font-bold">Available jobs</h1>
-          <p class="text-neutral-200">Looking for a job? Browse our latest job openings</p>
-        </div>
-      </header>
+      <div class="container mx-auto p-4">
+        <header class="mt-8">
+          <h1 class="text-4xl font-bold">Find your next awesome job</h1>
+        </header>
 
-      <div class="container mx-auto flex gap-4 py-4">
-        <div class="w-3/6">
+        <div class="mt-8">
           <Input
-            placeholder="Search..."
             fluid
-            onInput={(e) => ctx.setSearchSignal(e.currentTarget.value)}
-            value={ctx.searchSignal()}
+            value={filters.search()}
+            onInput={(ev) => {
+              filters.setSearch(ev.currentTarget.value);
+            }}
+            placeholder="Search job"
+            content={{
+              left: <BiRegularSearchAlt size={24} />,
+              right: (
+                <button
+                  type="button"
+                  onClick={() => setAreFiltersOpen(true)}
+                  class="transition-md rounded-md hover:bg-primary-500/50"
+                >
+                  <BiRegularFilter size={24} />
+                </button>
+              ),
+            }}
           />
         </div>
-        <div class="w-1/6">
-          <Select
-            multi
-            options={ctx.skills()?.map((s) => ({ value: s, label: s }))}
-            value={ctx.skillsSignal()}
-            onChange={ctx.setSkillsSignal}
-          />
-        </div>
-        <div class="w-1/6">
-          <Select
-            multi
-            options={ctx.industries()?.map((s) => ({ value: s, label: s }))}
-            value={ctx.industriesSignal()}
-            onChange={ctx.setIndustriesSignal}
-          />
-        </div>
-        <div class="w-1/6">
-          <Select
-            multi
-            options={ctx.employmentTypes()?.map((s) => ({ value: s, label: s }))}
-            value={ctx.employmentTypesSignal()}
-            onChange={ctx.setEmploymentTypesSignal}
-          />
-        </div>
+
+        <section class="my-4 [&>*+*]:mt-4">
+          <For each={searchedJobs()}>{(job) => <CardJob job={job} />}</For>
+        </section>
       </div>
 
-      <section class="container mx-auto flex gap-8 py-4">
-        <div class="basis-1/3">
-          <div class="flex justify-between">
-            <div class="w-2/3">
-              <h4 class="text-xl font-bold">
-                {ctx.searchSignal() !== '' ? `Related to ${ctx.searchSignal()}` : 'All jobs listed'}
-              </h4>
-              <p>{filteredJobs().length} jobs available</p>
-            </div>
-            <div class="w-1/3">
-              <Select options={ctx.orderOptions} value={ctx.orderSignal()} onChange={ctx.setOrderSignal} />
-            </div>
-          </div>
-
-          <div class="mt-8 max-h-screen overflow-y-auto overflow-x-hidden [&>*+*]:mt-4">
-            <Show when={!ctx.jobs.loading} fallback={<LoadingIndicator />}>
-              <For each={filteredJobs()}>
-                {(job, _) => (
-                  <Card
-                    clickable
-                    variant="neutral"
-                    active={selectedJob()?.id === job.id}
-                    onClick={() => setSelectedJob(job)}
-                  >
-                    <div class="flex flex-col gap-8">
-                      <div class="flex justify-between gap-8">
-                        <h4>
-                          <strong class="text-lg">{job.job_title}</strong> at{' '}
-                          <span class="text-primary-500">{job.company_name}</span>
-                        </h4>
-                        <div class="text-end">
-                          <p class="text-nowrap text-neutral-500">{job.employment_type}</p>
-                        </div>
-                      </div>
-                      <div>
-                        <p>
-                          <span class="font-semibold">Location:</span> {job.location}
-                        </p>
-                      </div>
-                    </div>
-                  </Card>
-                )}
-              </For>
-            </Show>
-          </div>
-        </div>
-
-        <div class="basis-2/3 overflow-y-auto rounded-lg bg-neutral-50 p-8 shadow-md">
-          <Show when={selectedJob()} fallback={<div>Select a job to see more details</div>} keyed>
-            {(job) => (
-              <div>
-                <div class="flex gap-4">
-                  <div class="h-16 w-16 rounded-lg border-2 border-primary-500" />
-                  <div class="flex-1">
-                    <h3 class="text-2xl font-bold">{job.job_title}</h3>
-                    <p class="mt-2 text-sm">
-                      {job.company_name} - {job.employment_type}
-                    </p>
-                    <p class="text-sm">Location: {job.location}</p>
-                  </div>
-                </div>
-
-                <hr class="my-8" />
-
-                <section>
-                  <h4 class="font-bold">Job Overview</h4>
-                  <p>{job.job_description}</p>
-                </section>
-
-                <section class="mt-4 [&>*+*]:mt-2">
-                  <h4 class="font-bold">Requirements</h4>
-                  <p>{job.requirements}</p>
-                  <div>
-                    <span class="font-semibold">Required skills:</span>
-                    <ul class="ml-8 mt-2 list-disc">
-                      <For each={job.required_skills}>{(s) => <li>{s}</li>}</For>
-                    </ul>
-                  </div>
-                  <p>
-                    <span class="font-semibold">Experience:</span> {job.years_experience}+ years of experience
-                  </p>
-                  <p>
-                    <span class="font-semibold">Education:</span> {job.education_level}
-                  </p>
-                </section>
-              </div>
-            )}
-          </Show>
-        </div>
-      </section>
+      <DialogJobsFilters open={areFiltersOpen()} setOpen={setAreFiltersOpen} />
+      <DialogJobDetails />
     </>
   );
 };
 
-const Jobs = () => {
+const PageJobs = () => {
   return (
     <JobsProvider>
       <Content />
@@ -158,4 +61,4 @@ const Jobs = () => {
   );
 };
 
-export default Jobs;
+export default PageJobs;

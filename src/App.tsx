@@ -12,7 +12,7 @@ export default function App() {
       <Route path="/" component={NoSessionGuard}>
         <Route path="/signin" component={Signin} />
       </Route>
-      <Route path="/jobs" component={Jobs} />
+      <Route path="/jobs/:id?" component={Jobs} />
 
       <Route path="/internal">
         <Route path="/styling" component={InternalStyling} />
