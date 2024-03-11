@@ -17,7 +17,14 @@ const SimpleInput: Component<SimpleInputProps> = (props) => {
   );
 };
 
-const ComposedInput = (props: any) => {
+type ComposedInputProps = SimpleInputProps & {
+  content?: {
+    left?: Node;
+    right?: Node;
+  };
+};
+
+const ComposedInput: Component<ComposedInputProps> = (props: any) => {
   const [local, others] = splitProps(props, ['content', 'invalid', 'fluid']);
 
   return (
@@ -33,8 +40,8 @@ const ComposedInput = (props: any) => {
   );
 };
 
-const Input = (props: any) => {
-  if (props.content) {
+const Input = (props: SimpleInputProps | ComposedInputProps) => {
+  if ('content' in props) {
     return <ComposedInput {...props} />;
   }
 
