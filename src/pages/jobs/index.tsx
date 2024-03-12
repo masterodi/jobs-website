@@ -1,5 +1,7 @@
-import { BiRegularFilter, BiRegularSearchAlt } from 'solid-icons/bi';
+import { BiRegularSearchAlt } from 'solid-icons/bi';
+import { VsFilterFilled } from 'solid-icons/vs';
 import { For, createSignal } from 'solid-js';
+import Button from '../../components/Button';
 import Input from '../../components/Input';
 import CardJob from './CardJob';
 import DialogJobDetails from './DialogJobDetailsl';
@@ -27,18 +29,12 @@ const Content = () => {
               filters.setSearch(ev.currentTarget.value);
             }}
             placeholder="Search job"
-            content={{
-              left: <BiRegularSearchAlt size={24} />,
-              right: (
-                <button
-                  type="button"
-                  onClick={() => setAreFiltersOpen(true)}
-                  class="transition-md rounded-md hover:bg-primary-500/50"
-                >
-                  <BiRegularFilter size={24} />
-                </button>
-              ),
-            }}
+            contentLeft={<BiRegularSearchAlt size={24} />}
+            contentRight={
+              <Button rounded type="button" onClick={() => setAreFiltersOpen(true)}>
+                <VsFilterFilled />
+              </Button>
+            }
           />
         </div>
 

@@ -18,14 +18,12 @@ const SimpleInput: Component<SimpleInputProps> = (props) => {
 };
 
 type ComposedInputProps = SimpleInputProps & {
-  content?: {
-    left?: Node;
-    right?: Node;
-  };
+  contentLeft?: JSX.Element;
+  contentRight?: JSX.Element;
 };
 
 const ComposedInput: Component<ComposedInputProps> = (props: any) => {
-  const [local, others] = splitProps(props, ['content', 'invalid', 'fluid']);
+  const [local, others] = splitProps(props, ['contentLeft', 'contentRight', 'invalid', 'fluid']);
 
   return (
     <div
@@ -33,15 +31,15 @@ const ComposedInput: Component<ComposedInputProps> = (props: any) => {
       classList={{ 'border-2 border-red-500': local.invalid, 'w-full': local.fluid }}
       aria-invalid={local.invalid}
     >
-      <Show when={local.content?.left}>{local.content.left}</Show>
+      <Show when={local.contentLeft}>{local.contentLeft}</Show>
       <input class="w-full bg-transparent p-1 outline-none" {...others} />
-      <Show when={local.content?.right}>{local.content.right}</Show>
+      <Show when={local.contentRight}>{local.contentRight}</Show>
     </div>
   );
 };
 
 const Input = (props: SimpleInputProps | ComposedInputProps) => {
-  if ('content' in props) {
+  if ('contentLeft' in props || 'contentRight' in props) {
     return <ComposedInput {...props} />;
   }
 
