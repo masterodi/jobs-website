@@ -1,19 +1,38 @@
+import { cva } from 'class-variance-authority';
 import { HiSolidXMark } from 'solid-icons/hi';
-import { Show } from 'solid-js';
+import { Component, Show } from 'solid-js';
+import { ComponentVariant } from '../types';
 
-const Pill = (props: any) => {
-  const handleDelete = (event) => {
+const pillVariants = cva(['flex', 'cursor-default', 'items-center', 'gap-2', 'rounded-full', 'p-2', 'text-sm'], {
+  variants: {
+    intent: {
+      primary: ['bg-primary-500', 'text-neutral-50'],
+      neutral: [],
+      flat: [],
+    },
+  },
+  defaultVariants: {
+    intent: 'primary',
+  },
+});
+
+type PillProps = {
+  variant?: ComponentVariant;
+  onDelete?: (ev: MouseEvent) => void;
+  label?: string;
+};
+
+const Pill: Component<PillProps> = (props) => {
+  const handleDelete = (event: MouseEvent) => {
     event.stopPropagation();
-    props.onDelete(event);
+    props.onDelete?.(event);
   };
 
   return (
-    <div
-      onClick={(e) => e.stopPropagation()}
-      class="flex cursor-default items-center gap-2 rounded-full p-2 text-sm"
-      classList={{ 'bg-primary-500 text-neutral-50': props.variant === 'primary' }}
-    >
-      <span>{props.label}</span>
+    <div onClick={(e) => e.stopPropagation()} class={pillVariants({ intent: props.variant })}>
+      <Show when={props.label}>
+        <span>{props.label}</span>
+      </Show>
       <Show when={!!props.onDelete}>
         <button
           onClick={handleDelete}
