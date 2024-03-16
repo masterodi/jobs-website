@@ -1,8 +1,7 @@
 import { createSignal } from 'solid-js';
 import Button from '../../components/Button';
 import Dialog from '../../components/Dialog';
-import Input from '../../components/Input';
-import InputLabeled from '../../components/InputLabeled';
+import { Input, InputLabeled } from '../../components/Input';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import Select from '../../components/Select';
 

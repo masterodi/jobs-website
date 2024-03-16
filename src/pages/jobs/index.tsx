@@ -2,7 +2,7 @@ import { BiRegularSearchAlt } from 'solid-icons/bi';
 import { VsFilterFilled } from 'solid-icons/vs';
 import { For, createSignal } from 'solid-js';
 import Button from '../../components/Button';
-import Input from '../../components/Input';
+import { Input } from '../../components/Input';
 import CardJob from './CardJob';
 import DialogJobDetails from './DialogJobDetailsl';
 import DialogJobsFilters from './DialogJobsFilters';

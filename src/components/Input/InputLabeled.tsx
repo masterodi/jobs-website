@@ -1,7 +1,8 @@
 import { Component, Show, splitProps } from 'solid-js';
-import Input, { InputProps } from './Input';
+import Input from './Input';
+import { InputSimpleProps } from './InputSimple';
 
-type InputLabeledProps = InputProps & {
+type InputLabeledProps = InputSimpleProps & {
   label?: string;
   error?: string | null;
 };

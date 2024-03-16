@@ -4,7 +4,7 @@ import { useSessionContext } from '../Provider';
 import { signInUser, signUpUser } from '../api/authentication';
 import Button from '../components/Button';
 import Carousel, { useCarouselContext } from '../components/Carousel';
-import InputLabeled from '../components/InputLabeled';
+import { InputLabeled } from '../components/Input';
 import { registerSchema, signinSchema } from '../schemas';
 import createFields from '../signals/createFields';
 import { useAction } from '../useAction';
