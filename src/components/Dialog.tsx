@@ -16,7 +16,6 @@ const Dialog: Component<DialogProps> = (props) => {
       return;
     }
     props.setOpen(false);
-    props.afterClose?.();
   };
 
   createEffect(() => {
