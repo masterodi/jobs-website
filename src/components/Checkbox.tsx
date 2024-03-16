@@ -1,23 +1,14 @@
-import { Show } from 'solid-js';
+import { Show, splitProps } from 'solid-js';
 
 const Checkbox = (props: any) => {
+  const [local, other] = splitProps(props, ['label', 'id', 'class']);
+
   return (
     <div class="p-1">
-      <input
-        type="checkbox"
-        id={props.id}
-        name={props.name}
-        placeholder={props.placeholder}
-        title={props.title}
-        value={props.value}
-        checked={props.checked}
-        onInput={props.onInput}
-        onChange={props.onChange}
-        class="align-middle"
-      />
-      <Show when={props.label}>
-        <label for={props.id} class="ml-1">
-          {props.label}
+      <input type="checkbox" id={local.id} class="align-middle" {...other} />
+      <Show when={local.label}>
+        <label for={local.id} class="ml-1">
+          {local.label}
         </label>
       </Show>
     </div>
