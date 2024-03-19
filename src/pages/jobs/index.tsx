@@ -25,14 +25,12 @@ const Content = () => {
           <Input
             fluid
             value={filters.search()}
-            onInput={(ev) => {
-              filters.setSearch(ev.currentTarget.value);
-            }}
+            onInput={(e) => filters.setSearch(e.currentTarget.value)}
             placeholder="Search job"
             contentLeft={<BiRegularSearchAlt size={24} />}
             contentRight={
-              <Button rounded type="button" onClick={() => setAreFiltersOpen(true)}>
-                <VsFilterFilled />
+              <Button variant="flat" rounded type="button" onClick={() => setAreFiltersOpen(true)}>
+                <VsFilterFilled size={24} />
               </Button>
             }
           />

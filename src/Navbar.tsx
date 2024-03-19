@@ -27,12 +27,18 @@ const Navbar = () => {
           </li>
         </ul>
       </div>
-      <Show when={!session()}>
-        <Button onClick={() => navigate('/signin')}>Get Started</Button>
-      </Show>
-      <Show when={session()}>
-        <Button onClick={signOut}>Sign out</Button>
-      </Show>
+      <div>
+        <Show when={!session()}>
+          <Button slim variant="flat" onClick={() => navigate('/signin')}>
+            Get Started
+          </Button>
+        </Show>
+        <Show when={session()}>
+          <Button slim variant="flat" onClick={signOut}>
+            Sign out
+          </Button>
+        </Show>
+      </div>
     </nav>
   );
 };
