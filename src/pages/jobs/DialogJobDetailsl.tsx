@@ -10,7 +10,7 @@ const DialogJobDetails = () => {
   const job = () => jobs()?.find((job) => job.id === params.id);
 
   return (
-    <Dialog open={!!params.id} setOpen={(_) => navigate('/jobs')}>
+    <Dialog open={!!params.id} setOpen={(_) => navigate('/jobs', { scroll: false })}>
       <div class="[&>*+*]:mt-2">
         <h2 class="text-xl font-bold">{job()?.job_title}</h2>
         <p>
