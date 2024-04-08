@@ -1,21 +1,21 @@
 import { Show } from 'solid-js';
 import { InferType } from 'yup';
 import { useSessionContext } from '../Provider';
-import { signInUser } from '../api/authentication';
+import { signUpUser } from '../api/authentication';
 import Button from '../components/Button';
 import { Input } from '../components/Input';
-import { signinSchema } from '../schemas';
+import { registerSchema, signinSchema } from '../schemas';
 import createFields from '../signals/createFields';
 import { useAction } from '../useAction';
 
-const Signin = () => {
+const Signup = () => {
   const { refetch } = useSessionContext();
-  const storeFields = createFields({ email: '', password: '' }, signinSchema);
+  const storeFields = createFields({ email: '', password: '' }, registerSchema);
   const { execute, isLoading, error } = useAction({
-    action: (data: InferType<typeof signinSchema>) => signInUser(data),
+    action: (data: InferType<typeof signinSchema>) => signUpUser(data),
   });
 
-  const signIn = async (event: SubmitEvent) => {
+  const signUp = async (event: SubmitEvent) => {
     event.preventDefault();
 
     if (!(await storeFields.validate())) {
@@ -32,8 +32,8 @@ const Signin = () => {
   return (
     <div class="grid min-h-screen place-items-center">
       <div class="container p-4">
-        <h1 class="title-1 mb-12 text-center">Enter Your Jobbler Account</h1>
-        <form onSubmit={signIn} class="mx-auto mb-4 max-w-2xl [&>*+*]:mt-8">
+        <h1 class="title-1 mb-12 text-center">Create Your Jobbler Account</h1>
+        <form onSubmit={signUp} class="mx-auto mb-4 max-w-2xl [&>*+*]:mt-8">
           <Input
             label="Email"
             type="text"
@@ -54,10 +54,10 @@ const Signin = () => {
             <div class="text-error-500">{error()?.message}</div>
           </Show>
           <Button fluid type="submit" loading={isLoading()}>
-            Sign In
+            Sign Up
           </Button>
-          <Button href="/signup" fluid variant="text" color="neutral">
-            I don't have an account
+          <Button href="/signin" fluid variant="text" color="neutral">
+            I already have an account
           </Button>
         </form>
       </div>
@@ -65,4 +65,4 @@ const Signin = () => {
   );
 };
 
-export default Signin;
+export default Signup;
