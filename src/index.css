@@ -4,6 +4,26 @@
 @tailwind components;
 @tailwind utilities;
 
+.scrollbar-discreet::-webkit-scrollbar {
+  width: 7px;
+}
+
+.scrollbar-discreet::-webkit-scrollbar-track {
+  @apply bg-neutral-200/15;
+}
+
+.scrollbar-discreet::-webkit-scrollbar-thumb {
+  @apply rounded-md bg-neutral-400/25;
+}
+
+.scrollbar-discreet::-webkit-scrollbar-thumb:hover {
+  @apply bg-primary-300/50;
+}
+
+.scrollbar-discreet::-webkit-scrollbar-thumb:active {
+  @apply bg-primary-400;
+}
+
 @layer base {
   body {
     @apply bg-neutral-900 font-base text-neutral-50;
