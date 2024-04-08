@@ -1,23 +1,23 @@
 import { useNavigate } from '@solidjs/router';
-import { ParentComponent, Show, createEffect } from 'solid-js';
+import { ParentComponent, Show, children, createEffect } from 'solid-js';
 import { useSessionContext } from '../Provider';
 
-const PrivateGuard: ParentComponent = (props) => {
+const PrivateRoute: ParentComponent = (props) => {
   const navigate = useNavigate();
   const { session } = useSessionContext();
+  const chldrn = children(() => props.children);
 
   createEffect(() => {
     if (!session.loading && !session()) {
-      navigate('/login', { replace: true });
-      return;
+      navigate('/signin', { replace: true });
     }
   });
 
   return (
     <Show when={!session.loading} fallback="Loading...">
-      {props.children}
+      {chldrn()}
     </Show>
   );
 };
 
-export default PrivateGuard;
+export default PrivateRoute;
