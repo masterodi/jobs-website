@@ -16,7 +16,7 @@ const initialFieldErrorsFromFields = <T extends Record<string, string>>(fields: 
   return fieldErrors;
 };
 
-const createFields = <T extends Record<string, string>>(initialValue: T) => {
+const createFields = <T extends Record<string, string>>(initialValue: T, validationSchema?: Schema<T>) => {
   const [fields, setFields] = createStore(initialValue);
   const [fieldErrors, setFieldErrors] = createStore(initialFieldErrorsFromFields(initialValue));
 
@@ -26,10 +26,10 @@ const createFields = <T extends Record<string, string>>(initialValue: T) => {
     setFields({ ...fields, [name]: value });
   };
 
-  const validate = async <G>(schema: Schema<G>) => {
+  const validate = async () => {
     try {
       setFieldErrors(initialFieldErrorsFromFields(initialValue));
-      await schema.validate(fields, { abortEarly: false });
+      await validationSchema?.validate(fields, { abortEarly: false });
       return true;
     } catch (err) {
       if (!(err instanceof ValidationError)) {
