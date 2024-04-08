@@ -6,7 +6,7 @@
 
 @layer base {
   body {
-    @apply font-base;
+    @apply bg-neutral-900 font-base text-neutral-50;
   }
 
   input::placeholder {
@@ -14,12 +14,36 @@
   }
 }
 
-@layer utilities {
+@layer components {
+  .title-6 {
+    @apply text-lg;
+  }
+
+  .title-5 {
+    @apply text-xl;
+  }
+
+  .title-4 {
+    @apply text-2xl;
+  }
+
+  .title-3 {
+    @apply text-3xl font-semibold;
+  }
+
+  .title-2 {
+    @apply text-4xl font-semibold;
+  }
+
+  .title-1 {
+    @apply text-5xl font-bold;
+  }
+
   .flex-center {
     @apply flex items-center justify-center;
   }
 
-  .transition-md {
+  .animated {
     @apply transition-all duration-300 ease-in-out;
   }
 }
