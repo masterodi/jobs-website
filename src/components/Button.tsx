@@ -93,7 +93,12 @@ const Button: ParentComponent<ButtonProps> = (props) => {
   if ('href' in rest) {
     return (
       <A class={cls()} {...rest}>
-        {chldrn()}
+        <span class="flex items-center justify-center gap-2">
+          <Show when={props.icon}>
+            <i>{props.icon}</i>
+          </Show>
+          <span class="flex-1">{chldrn()}</span>
+        </span>
       </A>
     );
   }
