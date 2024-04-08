@@ -1,89 +1,118 @@
+import { A, AnchorProps } from '@solidjs/router';
 import { cva } from 'class-variance-authority';
-import { Component, JSX, Show, children, splitProps } from 'solid-js';
+import { JSX, ParentComponent, Show, children, splitProps } from 'solid-js';
 import LoadingIndicator from './LoadingIndicator';
 
+type CommonButtonProps = {
+  color?: 'primary' | 'neutral';
+  variant?: 'classic' | 'outlined' | 'text';
+  fluid?: boolean;
+  loading?: boolean;
+  icon?: JSX.Element;
+};
+
+type ButtonProps =
+  | (CommonButtonProps & { href: string } & AnchorProps)
+  | (CommonButtonProps & JSX.ButtonHTMLAttributes<HTMLButtonElement>);
+
 const buttonVariants = cva(
-  ['transition-md', 'relative', 'outline-none', 'disabled:cursor-not-allowed', 'font-semibold'],
+  ['animated relative rounded-md border-2 p-2 font-semibold outline-none', 'focus:outline-primary-400'],
   {
     variants: {
-      intent: {
-        primary: ['bg-primary-500', 'hover:bg-primary-400', 'active:bg-primary-600', 'disabled:bg-primary-500/75'],
-        neutral: ['bg-neutral-500', 'hover:bg-neutral-400', 'active:bg-neutral-600', 'disabled:bg-neutral-500/75'],
-        flat: ['bg-transparent', 'hover:bg-neutral-200', 'active:bg-neutral-300', 'disabled:bg-neutral-200/75'],
+      color: {
+        primary: '',
+        neutral: '',
       },
-      rounded: {
-        false: 'rounded-md',
-        true: 'rounded-full',
+      variant: {
+        classic: '',
+        outlined: '',
+        text: '',
       },
       fluid: {
-        true: 'w-full',
-      },
-      slim: {
-        false: [],
-        true: [],
+        false: '',
+        true: 'inline-block w-full text-center',
       },
     },
     compoundVariants: [
       {
-        rounded: false,
-        slim: false,
-        class: 'px-2 py-4',
+        color: 'primary',
+        variant: 'classic',
+        class: ['border-transparent bg-primary-500 text-black', 'hover:bg-primary-400 disabled:bg-primary-700'],
       },
       {
-        rounded: false,
-        slim: true,
-        class: 'px-2 py-1',
+        color: 'primary',
+        variant: 'outlined',
+        class: [
+          'border-primary-500 bg-transparent',
+          'hover:border-primary-400 hover:bg-primary-500/10 disabled:border-primary-700 disabled:bg-primary-700/10',
+        ],
       },
       {
-        rounded: true,
-        slim: [false, true],
-        class: 'p-2',
+        color: 'primary',
+        variant: 'text',
+        class: [
+          'border-transparent bg-transparent text-primary-500',
+          'hover:bg-primary-500/10 disabled:bg-primary-700/10 disabled:text-primary-700',
+        ],
+      },
+      {
+        color: 'neutral',
+        variant: 'classic',
+        class: ['border-transparent bg-neutral-500 text-white', 'hover:bg-neutral-400 disabled:bg-neutral-700'],
+      },
+      {
+        color: 'neutral',
+        variant: 'outlined',
+        class: [
+          'border-neutral-500 bg-transparent',
+          'hover:border-neutral-400 hover:bg-neutral-500/10 disabled:border-neutral-700 disabled:bg-neutral-700/10',
+        ],
+      },
+      {
+        color: 'neutral',
+        variant: 'text',
+        class: [
+          'border-transparent bg-transparent text-neutral-50',
+          'hover:bg-neutral-500/10 disabled:bg-neutral-700/10 disabled:text-neutral-300',
+        ],
       },
     ],
     defaultVariants: {
-      intent: 'primary',
-      rounded: false,
+      color: 'primary',
+      variant: 'classic',
       fluid: false,
-      slim: false,
     },
   },
 );
 
-type ButtonProps = JSX.ButtonHTMLAttributes<HTMLButtonElement> & {
-  variant?: 'primary' | 'neutral' | 'flat';
-  rounded?: boolean;
-  fluid?: boolean;
-  slim?: boolean;
-  loading?: boolean;
-  children: JSX.Element;
-};
+const Button: ParentComponent<ButtonProps> = (props) => {
+  const [local, rest] = splitProps(props, ['color', 'variant', 'fluid', 'loading', 'class', 'classList']);
+  const chldrn = children(() => props.children);
+  const cls = () => buttonVariants({ color: local.color, variant: local.variant, fluid: local.fluid });
 
-const Button: Component<ButtonProps> = (props) => {
-  const [local, rest] = splitProps(props, [
-    'variant',
-    'rounded',
-    'fluid',
-    'slim',
-    'loading',
-    'class',
-    'disabled',
-    'children',
-  ]);
-  const c = children(() => props.children);
+  if ('href' in rest) {
+    return (
+      <A class={cls()} {...rest}>
+        {chldrn()}
+      </A>
+    );
+  }
+
+  const { disabled, ...r } = rest;
 
   return (
-    <button
-      class={buttonVariants({ intent: local.variant, rounded: local.rounded, fluid: local.fluid, slim: local.slim })}
-      disabled={local.loading}
-      {...rest}
-    >
+    <button class={cls()} disabled={local.loading} {...r}>
       <Show when={local.loading}>
-        <span class="absolute left-1/2 -translate-x-1/2">
+        <span class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
           <LoadingIndicator />
         </span>
       </Show>
-
-      <span classList={{ invisible: local.loading }}>{c()}</span>
+      <span class="flex items-center justify-center gap-2" classList={{ invisible: local.loading }}>
+        <Show when={props.icon}>
+          <i>{props.icon}</i>
+        </Show>
+        <span class="flex-1">{chldrn()}</span>
+      </span>
     </button>
   );
 };
