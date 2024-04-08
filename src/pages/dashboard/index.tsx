@@ -1,7 +1,7 @@
 const Dashboard = (props) => {
   return (
-    <div class="h-screen border border-cyan-500">
-      <div class="h-full bg-cyan-500">{props.children}</div>
+    <div class="scrollbar-discreet h-screen max-h-screen overflow-y-auto">
+      <div class="h-full">{props.children}</div>
     </div>
   );
 };
