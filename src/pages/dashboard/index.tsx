@@ -1,3 +1,5 @@
+import Jobs from './jobs';
+
 const Dashboard = (props) => {
   return (
     <div class="scrollbar-discreet h-screen max-h-screen overflow-y-auto">
@@ -5,5 +7,7 @@ const Dashboard = (props) => {
     </div>
   );
 };
+
+Dashboard.Jobs = Jobs;
 
 export default Dashboard;

@@ -19,7 +19,7 @@ export default function App() {
     <Router root={Layout}>
       <Route path="/dashboard" component={PrivateDashboard}>
         <Route path="/inbox" component={() => <div>inbox</div>} />
-        <Route path="/jobs" component={() => <div>jobs</div>} />
+        <Route path="/jobs" component={() => <Dashboard.Jobs />} />
         <Route path="/applies" component={() => <div>applies</div>} />
         <Route path="/statistics" component={() => <div>statistics</div>} />
         <Route path="/settings" component={() => <div>settings</div>} />
