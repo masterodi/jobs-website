@@ -7,4 +7,4 @@ export type SigninData = InferType<typeof signinSchema>;
 export type RegisterData = InferType<typeof registerSchema>;
 export type JobsOrder = 'JOBS_ORDER:JOB_TITLE:ASC' | 'JOBS_ORDER:JOB_TITLE:DESC';
 
-export type ComponentVariant = 'primary' | 'neutral' | 'flat';
+export type ComponentVariant = 'primary' | 'neutral' | 'flat' | null | undefined;
